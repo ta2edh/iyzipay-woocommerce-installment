@@ -1,0 +1,43 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2022-05-16 10:25+0000\n"
+"PO-Revision-Date: 2023-04-03 08:49+0000\n"
+"Last-Translator: \n"
+"Language-Team: Türkçe\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: tr_TR\n"
+"Report-Msgid-Bugs-To: \n"
+"X-Loco-Version: 2.6.3; wp-6.3-alpha-55617"
+
+# This file is distributed under the GNU General Public License v2 or later.
+msgid "API credentials are missing."
+msgstr "API kimlik bilgileri eksik."
+
+msgid "An error occurred while retrieving installment information."
+msgstr "Taksit bilgileri alınırken bir hata oluştu."
+
+msgid "Security verification failed."
+msgstr "Doğrulama hatası."
+
+msgid "Invalid price."
+msgstr "Geçersiz tutar"
+
+msgid "Installment"
+msgstr "Taksit"
+
+msgid "Total"
+msgstr "Toplam"
+
+msgid "Installment Options"
+msgstr "Taksit Seçenekleri"
+
+msgid "No installment options found."
+msgstr "Taksit seçenekleri bulunamadı."
+
+msgid "Price"
+msgstr "Fiyat"

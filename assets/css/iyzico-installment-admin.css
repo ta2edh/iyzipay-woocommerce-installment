@@ -1,0 +1,125 @@
+/* Main Container */
+.iyzico-settings-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.iyzico-admin-container {
+  background: #fff;
+  border: 1px solid #ccd0d4;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  margin-top: 20px;
+}
+
+/* Header Styles */
+.iyzico-admin-header {
+  padding: 20px;
+  border-bottom: 1px solid #ccd0d4;
+  background: #f8f9fa;
+}
+
+.iyzico-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.iyzico-logo-wrapper {
+  width: 120px;
+  height: auto;
+}
+
+.iyzico-logo {
+  width: 100%;
+  height: auto;
+}
+
+.iyzico-version {
+  background: #2271b1;
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Content Styles */
+.iyzico-admin-content {
+  padding: 20px;
+}
+
+.iyzico-settings-section {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.iyzico-settings-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* Form Styles */
+.iyzico-form-group {
+  margin-bottom: 20px;
+}
+
+.iyzico-form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.iyzico-form-control {
+  width: 100%;
+  max-width: 500px;
+  padding: 8px 10px;
+  border-radius: 3px;
+  border: 1px solid #8c8f94;
+}
+
+/* API Status */
+.iyzico-api-status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.iyzico-api-status.connected {
+  background: #d4edda;
+  color: #155724;
+}
+
+.iyzico-api-status.disconnected {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Shortcode Box */
+.iyzico-shortcode-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.iyzico-shortcode-box code {
+  background: #f6f7f7;
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 782px) {
+  .iyzico-admin-container {
+      margin: 20px -20px 0;
+  }
+  
+  .iyzico-form-control {
+      max-width: 100%;
+  }
+}

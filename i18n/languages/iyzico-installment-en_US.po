@@ -1,0 +1,43 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2022-05-16 10:26+0000\n"
+"PO-Revision-Date: 2023-04-03 08:48+0000\n"
+"Last-Translator: \n"
+"Language-Team: English (United States)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: en_US\n"
+"Report-Msgid-Bugs-To: \n"
+"X-Loco-Version: 2.6.3; wp-6.3-alpha-55617"
+
+# This file is distributed under the GNU General Public License v2 or later.
+msgid "API credentials are missing."
+msgstr "API credentials are missing."
+
+msgid "An error occurred while retrieving installment information."
+msgstr "An error occurred while retrieving installment information."
+
+msgid "Security verification failed."
+msgstr "Security verification failed."
+
+msgid "Invalid price."
+msgstr "Invalid price."
+
+msgid "Installment"
+msgstr "Installment"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Installment Options"
+msgstr "Installment Options"
+
+msgid "No installment options found."
+msgstr "No installment options found."
+
+msgid "Price"
+msgstr "Price"
