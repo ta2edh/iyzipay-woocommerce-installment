@@ -62,3 +62,8 @@ $GLOBALS['iyzico_logger']->info('Hpos class loaded successfully');
 require_once IYZI_INSTALLMENT_PATH . 'includes/admin/class-iyzico-installment-admin.php';
 $GLOBALS['iyzico_admin'] = new Iyzico_Installment_Admin($GLOBALS['iyzico_settings']);
 $GLOBALS['iyzico_logger']->info('Admin class loaded successfully');
+
+// Step 7: Load Dynamic Installment class
+require_once IYZI_INSTALLMENT_PATH . 'includes/class-iyzico-installment-dynamic.php';
+$GLOBALS['iyzico_dynamic'] = new Iyzico_Installment_Dynamic($GLOBALS['iyzico_settings'], $GLOBALS['iyzico_api']);
+$GLOBALS['iyzico_logger']->info('Dynamic installment class loaded successfully');

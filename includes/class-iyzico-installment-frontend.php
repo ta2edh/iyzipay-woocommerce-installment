@@ -113,6 +113,9 @@ class Iyzico_Installment_Frontend
             return '<p>' . esc_html__('Geçerli bir fiyat belirtilmedi.', 'iyzico-installment') . '</p>';
         }
 
+        // Apply VAT if enabled
+        $price = $this->settings->calculate_price_with_vat($price);
+
         $installment_info = $this->api->get_installment_info($price, $bin);
 
         if (is_wp_error($installment_info)) {
@@ -172,6 +175,10 @@ class Iyzico_Installment_Frontend
     public function render_installment_tab()
     {
         $price = $this->get_product_price();
+        
+        // Apply VAT if enabled
+        $price = $this->settings->calculate_price_with_vat($price);
+        
         $installment_info = $this->api->get_installment_info($price);
 
         if (is_wp_error($installment_info)) {

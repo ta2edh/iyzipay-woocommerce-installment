@@ -23,7 +23,10 @@ class Iyzico_Installment_Settings
         'api_key' => '',
         'secret_key' => '',
         'integration_type' => 'shortcode',
-        'mode' => 'sandbox'
+        'mode' => 'sandbox',
+        'enable_vat' => false,
+        'vat_rate' => 20,
+        'enable_dynamic_installments' => false
     );
 
     /**
@@ -179,5 +182,51 @@ class Iyzico_Installment_Settings
     public function show_product_tabs()
     {
         return $this->is_direct_integration();
+    }
+
+    /**
+     * Check if VAT is enabled
+     *
+     * @return bool
+     */
+    public function is_vat_enabled()
+    {
+        return $this->get('enable_vat', false);
+    }
+
+    /**
+     * Get VAT rate
+     *
+     * @return float
+     */
+    public function get_vat_rate()
+    {
+        return floatval($this->get('vat_rate', 20));
+    }
+
+    /**
+     * Check if dynamic installments are enabled
+     *
+     * @return bool
+     */
+    public function is_dynamic_installments_enabled()
+    {
+        return $this->get('enable_dynamic_installments', false);
+    }
+
+    /**
+     * Calculate price with VAT
+     *
+     * @param float $price Base price
+     * @return float
+     */
+    public function calculate_price_with_vat($price)
+    {
+        if (!$this->is_vat_enabled()) {
+            return $price;
+        }
+        
+        $vat_rate = $this->get_vat_rate();
+        return $price * (1 + ($vat_rate / 100));
     }
 } 

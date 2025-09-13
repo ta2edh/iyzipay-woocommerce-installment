@@ -90,6 +90,18 @@ class Iyzico_Installment_Admin
             $sanitized['mode'] = in_array($input['mode'], ['sandbox', 'live']) ? $input['mode'] : 'sandbox';
         }
 
+        if (isset($input['enable_vat'])) {
+            $sanitized['enable_vat'] = (bool) $input['enable_vat'];
+        }
+
+        if (isset($input['vat_rate'])) {
+            $sanitized['vat_rate'] = floatval($input['vat_rate']);
+        }
+
+        if (isset($input['enable_dynamic_installments'])) {
+            $sanitized['enable_dynamic_installments'] = (bool) $input['enable_dynamic_installments'];
+        }
+
         return $sanitized;
     }
 
@@ -261,6 +273,52 @@ class Iyzico_Installment_Admin
                                 </div>
                                 <p class="description">
                                     <?php echo esc_html__('Bu shortcode\'u taksit bilgilerini göstermek istediğiniz yere ekleyin.', 'iyzico-installment'); ?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="iyzico-settings-section">
+                            <h2><?php echo esc_html__('KDV ve Dinamik Taksit Ayarları', 'iyzico-installment'); ?></h2>
+                            
+                            <div class="iyzico-form-group">
+                                <label>
+                                    <input type="checkbox" name="<?php echo esc_attr(Iyzico_Installment_Settings::OPTION_KEY); ?>[enable_vat]" value="1" <?php checked($settings['enable_vat'], true); ?>>
+                                    <?php echo esc_html__('KDV Dahil Fiyat Hesapla', 'iyzico-installment'); ?>
+                                </label>
+                                <p class="description">
+                                    <?php echo esc_html__('Bu seçenek aktif edildiğinde, taksit hesaplamaları KDV dahil fiyat üzerinden yapılır.', 'iyzico-installment'); ?>
+                                </p>
+                            </div>
+
+                            <div class="iyzico-form-group">
+                                <label for="iyzico_vat_rate"><?php echo esc_html__('KDV Oranı (%)', 'iyzico-installment'); ?></label>
+                                <input type="number" id="iyzico_vat_rate" name="<?php echo esc_attr(Iyzico_Installment_Settings::OPTION_KEY); ?>[vat_rate]" 
+                                    value="<?php echo esc_attr($settings['vat_rate']); ?>" min="0" max="100" step="0.01" class="small-text iyzico-form-control">
+                                <p class="description">
+                                    <?php echo esc_html__('KDV oranını yüzde olarak girin. Örnek: 20', 'iyzico-installment'); ?>
+                                </p>
+                            </div>
+
+                            <div class="iyzico-form-group">
+                                <label>
+                                    <input type="checkbox" name="<?php echo esc_attr(Iyzico_Installment_Settings::OPTION_KEY); ?>[enable_dynamic_installments]" value="1" <?php checked($settings['enable_dynamic_installments'], true); ?>>
+                                    <?php echo esc_html__('Dinamik Taksit Sistemi Aktif', 'iyzico-installment'); ?>
+                                </label>
+                                <p class="description">
+                                    <?php echo esc_html__('Bu seçenek aktif edildiğinde, varyasyonlu ürünlerde dinamik taksit sistemi çalışır.', 'iyzico-installment'); ?>
+                                </p>
+                            </div>
+
+                            <div class="iyzico-form-group">
+                                <label><?php echo esc_html__('Dinamik Taksit Shortcode', 'iyzico-installment'); ?></label>
+                                <div class="iyzico-shortcode-box">
+                                    <code id="iyzico-dynamic-shortcode">[dynamic_iyzico_installment]</code>
+                                    <button type="button" class="iyzico-copy-shortcode button" data-target="iyzico-dynamic-shortcode">
+                                        <?php echo esc_html__('Kopyala', 'iyzico-installment'); ?>
+                                    </button>
+                                </div>
+                                <p class="description">
+                                    <?php echo esc_html__('Bu shortcode varyasyonlu ürünlerde dinamik taksit gösterimi için kullanılır.', 'iyzico-installment'); ?>
                                 </p>
                             </div>
                         </div>
