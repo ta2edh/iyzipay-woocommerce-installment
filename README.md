@@ -10,13 +10,16 @@ iyzico Installment eklentisi, WooCommerce ürün sayfalarında iyzico'nun taksit
 ## 🚀 Özellikler
 
 - **Ürün Sayfası Entegrasyonu**: WooCommerce ürün sayfalarında otomatik taksit gösterimi
+- **Dinamik Taksit Hesaplama**: Varyasyonlu ürünlerde fiyat değişiminde anlık taksit güncelleme
 - **iyzico API Entegrasyonu**: Gerçek zamanlı taksit hesaplama
 - **Çoklu Entegrasyon Seçenekleri**: Shortcode, ürün sekmesi veya widget olarak kullanım
+- **AJAX Desteği**: Dinamik taksit hesaplama ve güncelleme
 - **Responsive Tasarım**: Mobil ve masaüstü uyumlu
+- **Banka Logoları**: Kredi kartı familyalarına göre otomatik logo gösterimi
+- **KDV Hesaplama**: Ürün fiyatlarına KDV dahil etme seçeneği
 - **HPOS Uyumluluğu**: WooCommerce High-Performance Order Storage desteği
 - **Çoklu Dil Desteği**: i18n entegrasyonu
 - **Gelişmiş Loglama**: Detaylı hata takibi ve debug bilgileri
-- **AJAX Desteği**: Dinamik taksit hesaplama
 
 ## 📋 Gereksinimler
 
@@ -78,6 +81,14 @@ Herhangi bir sayfa veya yazıda taksit bilgilerini göstermek için:
 [iyzico_installment]
 ```
 
+### Dinamik Taksit Shortcode
+
+Varyasyonlu ürünlerde anlık taksit güncelleme için:
+
+```php
+[dynamic_iyzico_installment]
+```
+
 ### PHP Kod ile Kullanım
 
 ```php
@@ -110,10 +121,14 @@ iyzico-installment/
 │   ├── class-iyzico-installment-settings.php    # Ayarlar yönetimi
 │   ├── class-iyzico-installment-api.php         # API entegrasyonu
 │   ├── class-iyzico-installment-frontend.php    # Frontend işlemleri
+│   ├── class-iyzico-installment-dynamic.php     # Dinamik taksit sistemi
 │   ├── class-iyzico-installment-logger.php      # Loglama sistemi
 │   ├── class-iyzico-installment-hpos.php        # HPOS uyumluluğu
 │   └── admin/                      # Yönetici paneli
 ├── assets/                         # CSS, JS ve görseller
+│   ├── css/                        # Stil dosyaları
+│   ├── js/                         # JavaScript dosyaları
+│   └── images/                     # Banka logoları
 ├── i18n/                           # Dil dosyaları
 └── logs/                           # Log dosyaları
 ```
@@ -123,6 +138,7 @@ iyzico-installment/
 - **Settings**: Eklenti ayarlarını yönetir
 - **API**: iyzico API entegrasyonunu sağlar
 - **Frontend**: Kullanıcı arayüzü ve shortcode işlemleri
+- **Dynamic**: Varyasyonlu ürünlerde dinamik taksit hesaplama
 - **Logger**: Hata takibi ve debug bilgileri
 - **HPOS**: WooCommerce High-Performance Order Storage uyumluluğu
 - **Admin**: Yönetici paneli ayarları
@@ -165,21 +181,38 @@ $response = InstallmentInfo::retrieve($request, $options);
 
 ### JavaScript Özelleştirme
 
-`assets/js/iyzico-installment.js` dosyasında AJAX işlemlerini özelleştirebilirsiniz:
+Dinamik taksit güncellemesi için JavaScript işlemleri:
 
 ```javascript
+// Varyasyon değişikliklerini dinle
+jQuery(document).on('found_variation', 'form.variations_form', function(event, variation) {
+    if (variation && variation.display_price) {
+        var finalPrice = variation.display_price;
+        
+        // KDV hesaplama
+        if (window.installment_ajax.vat_enabled) {
+            finalPrice = finalPrice * (1 + (window.installment_ajax.vat_rate / 100));
+        }
+        
+        loadInstallments(finalPrice);
+    }
+});
+
 // Taksit bilgilerini güncelle
-function updateInstallmentInfo(price) {
+function loadInstallments(price) {
     jQuery.ajax({
-        url: iyzicoInstallment.ajaxUrl,
+        url: window.installment_ajax.ajax_url,
         type: 'POST',
         data: {
-            action: 'iyzico_get_installment_info',
+            action: 'get_installment_options',
             price: price,
-            nonce: iyzicoInstallment.nonce
+            product_id: window.installment_ajax.product_id,
+            nonce: window.installment_ajax.nonce
         },
         success: function(response) {
-            // Taksit tablosunu güncelle
+            if (response.success) {
+                jQuery('.dynamic-iyzico-installment').html(response.data);
+            }
         }
     });
 }
@@ -192,7 +225,13 @@ function updateInstallmentInfo(price) {
 **Taksit bilgileri görünmüyor:**
 - API kimlik bilgilerini kontrol edin
 - WooCommerce'ın aktif olduğundan emin olun
+- Dinamik taksit ayarının etkin olduğunu kontrol edin
 - Log dosyalarını inceleyin
+
+**Varyasyonlarda taksit güncellenmiyor:**
+- JavaScript hatalarını kontrol edin (Browser Console)
+- AJAX isteklerinin başarılı olduğunu kontrol edin
+- Nonce değerinin doğru olduğundan emin olun
 
 **API hatası alıyorsunuz:**
 - API Key ve Secret Key'in doğru olduğunu kontrol edin
@@ -247,6 +286,13 @@ Bu proje [GPL v2](https://www.gnu.org/licenses/gpl-2.0.html) lisansı altında l
 - **GitHub Issues**: [Repository Issues](https://github.com/iyzico/iyzipay-woocommerce-installment/issues)
 
 ## 🔄 Güncellemeler
+
+### v1.1.0
+- **Dinamik Taksit Sistemi**: Varyasyonlu ürünlerde anlık taksit güncelleme
+- **KDV Hesaplama**: Ürün fiyatlarına KDV dahil etme seçeneği
+- **Banka Logo Desteği**: Kredi kartı familyalarına göre otomatik logo gösterimi
+- **AJAX Güvenlik**: Nonce kontrolü ve güvenlik iyileştirmeleri
+- **CSS Optimizasyonu**: Responsive tasarım iyileştirmeleri
 
 ### v1.0.0
 - İlk sürüm

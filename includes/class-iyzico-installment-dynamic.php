@@ -74,6 +74,12 @@ class Iyzico_Installment_Dynamic
                     color: #333 !important;
                 }
 
+                .dynamic-iyzico-installment table td.amount .woocommerce-Price-amount,
+                .dynamic-iyzico-installment table td.amount .amount,
+                .dynamic-iyzico-installment table td.amount .woocommerce-Price-currencySymbol {
+                    color: #333 !important;
+                }
+
                 .dynamic-iyzico-installment table tr:nth-child(even) {
                     background: #f9f9f9 !important;
                 }
