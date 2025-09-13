@@ -10,11 +10,17 @@
 - AJAX tabanlı anlık fiyat güncellemesi
 - KDV dahil fiyat hesaplama seçeneği
 
+### Özel CSS Sistemi
+- Admin panelinden custom CSS ekleme özelliği
+- Taksit tablolarının görünümünü özelleştirme
+- Güvenli CSS sanitization ile XSS koruması
+- Hem normal hem dynamic shortcode'larda desteklenir
+
 ### UI/UX İyileştirmeleri
 - Shortcode kopyalama butonları düzeltildi
-- CSS renk çakışmaları giderildi
 - Modern taksit tablosu tasarımı
-
+- Admin panel CSS editörü
+- SağlamKart logosu KuveytTürk ile değiştirildi
 ---
 
 [![WordPress](https://img.shields.io/badge/WordPress-6.6+-blue.svg)](https://wordpress.org/)
@@ -183,7 +189,7 @@ $response = InstallmentInfo::retrieve($request, $options);
 
 ### CSS Özelleştirme
 
-`assets/css/iyzico-installment.css` dosyasını düzenleyerek görünümü özelleştirebilirsiniz:
+`Admin arayüzünü` kullanarak görünümü özelleştirebilirsiniz:
 
 ```css
 .iyzico-installment-table {
@@ -195,6 +201,8 @@ $response = InstallmentInfo::retrieve($request, $options);
     background-color: #f9f9f9;
 }
 ```
+
+Örnek olması amacı ile hazırlanmış css'leri `style.css` dosyasında bulabilirsiniz.
 
 ### JavaScript Özelleştirme
 
