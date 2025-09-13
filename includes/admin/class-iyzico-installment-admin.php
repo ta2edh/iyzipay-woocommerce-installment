@@ -102,6 +102,20 @@ class Iyzico_Installment_Admin
             $sanitized['enable_dynamic_installments'] = (bool) $input['enable_dynamic_installments'];
         }
 
+        if (isset($input['custom_css'])) {
+            // CSS güvenlik kontrolü
+            $custom_css = wp_unslash($input['custom_css']);
+            // Zararlı script etiketlerini ve JavaScript kodlarını temizle
+            $custom_css = str_replace(array('<script', '</script', 'javascript:', 'expression(', 'eval(', 'onclick=', 'onload='), '', $custom_css);
+            // HTML etiketlerini temizle (sadece CSS olsun)
+            $custom_css = wp_strip_all_tags($custom_css);
+            $sanitized['custom_css'] = $custom_css;
+        }
+
+        if (isset($input['enable_dynamic_installments'])) {
+            $sanitized['enable_dynamic_installments'] = (bool) $input['enable_dynamic_installments'];
+        }
+
         return $sanitized;
     }
 
@@ -319,6 +333,26 @@ class Iyzico_Installment_Admin
                                 </div>
                                 <p class="description">
                                     <?php echo esc_html__('Bu shortcode varyasyonlu ürünlerde dinamik taksit gösterimi için kullanılır.', 'iyzico-installment'); ?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="iyzico-settings-section">
+                            <h2><?php echo esc_html__('Özel CSS Ayarları', 'iyzico-installment'); ?></h2>
+                            
+                            <div class="iyzico-form-group">
+                                <label for="iyzico_custom_css"><?php echo esc_html__('Özel CSS Kodları', 'iyzico-installment'); ?></label>
+                                <textarea id="iyzico_custom_css" name="<?php echo esc_attr(Iyzico_Installment_Settings::OPTION_KEY); ?>[custom_css]" 
+                                    rows="10" cols="50" class="large-text code iyzico-form-control" placeholder="/* Buraya özel CSS kodlarınızı yazabilirsiniz */&#10;&#10;.iyzico-installment-table {&#10;    border: 1px solid #ddd;&#10;    border-radius: 5px;&#10;}&#10;&#10;.iyzico-installment-amount {&#10;    color: #27ae60;&#10;    font-weight: bold;&#10;}"><?php echo esc_textarea($settings['custom_css']); ?></textarea>
+                                <p class="description">
+                                    <?php echo esc_html__('Taksit tablosu görünümünü özelleştirmek için CSS kodları ekleyebilirsiniz. Bu CSS kodları sadece iyzico taksit elementlerine uygulanacaktır.', 'iyzico-installment'); ?>
+                                </p>
+                                <p class="description">
+                                    <strong><?php echo esc_html__('Örnek CSS sınıfları:', 'iyzico-installment'); ?></strong><br>
+                                    <code>.iyzico-installment-table</code> - <?php echo esc_html__('Taksit tablosu', 'iyzico-installment'); ?><br>
+                                    <code>.iyzico-installment-amount</code> - <?php echo esc_html__('Taksit tutarları', 'iyzico-installment'); ?><br>
+                                    <code>.iyzico-installment-header</code> - <?php echo esc_html__('Tablo başlığı', 'iyzico-installment'); ?><br>
+                                    <code>.iyzico-card-logo</code> - <?php echo esc_html__('Kart logoları', 'iyzico-installment'); ?>
                                 </p>
                             </div>
                         </div>

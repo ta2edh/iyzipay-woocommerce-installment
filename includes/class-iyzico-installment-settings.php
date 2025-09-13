@@ -26,7 +26,8 @@ class Iyzico_Installment_Settings
         'mode' => 'sandbox',
         'enable_vat' => false,
         'vat_rate' => 20,
-        'enable_dynamic_installments' => false
+        'enable_dynamic_installments' => false,
+        'custom_css' => ''
     );
 
     /**
@@ -228,5 +229,15 @@ class Iyzico_Installment_Settings
         
         $vat_rate = $this->get_vat_rate();
         return $price * (1 + ($vat_rate / 100));
+    }
+
+    /**
+     * Get custom CSS
+     *
+     * @return string
+     */
+    public function get_custom_css()
+    {
+        return $this->get('custom_css', '');
     }
 } 
