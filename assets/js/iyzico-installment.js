@@ -23,7 +23,8 @@
     $(document).on('click', '.iyzico-copy-shortcode', function (e) {
       e.preventDefault();
       var $btn = $(this);
-      var shortcodeText = $('#iyzico-shortcode').text() || $btn.data('shortcode') || '';
+      var target = $btn.attr('data-target') || 'iyzico-shortcode'; // attr kullan data yerine
+      var shortcodeText = $('#' + target).text() || $btn.data('shortcode') || '';
       if (!shortcodeText) { alert(L.copyError); return; }
 
       if (navigator.clipboard && navigator.clipboard.writeText) {

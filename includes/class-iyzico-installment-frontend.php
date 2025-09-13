@@ -32,13 +32,6 @@ class Iyzico_Installment_Frontend
             return;
         }
 
-        wp_enqueue_style(
-            'iyzico-installment',
-            IYZI_INSTALLMENT_ASSETS_URL . '/css/iyzico-installment.css',
-            array(),
-            IYZI_INSTALLMENT_VERSION
-        );
-
         wp_enqueue_script(
             'iyzico-installment',
             IYZI_INSTALLMENT_ASSETS_URL . '/js/iyzico-installment.js',
@@ -58,6 +51,9 @@ class Iyzico_Installment_Frontend
             'currencySymbol' => get_woocommerce_currency_symbol(),
             'assetsUrl' => IYZI_INSTALLMENT_ASSETS_URL
         ));
+
+        // Add custom CSS if provided
+        $this->add_custom_css();
         
     }
 
@@ -113,19 +109,15 @@ class Iyzico_Installment_Frontend
             return '<p>' . esc_html__('Geçerli bir fiyat belirtilmedi.', 'iyzico-installment') . '</p>';
         }
 
+        // Apply VAT if enabled
+        $price = $this->settings->calculate_price_with_vat($price);
+
         $installment_info = $this->api->get_installment_info($price, $bin);
 
         if (is_wp_error($installment_info)) {
             return '<p>' . esc_html($installment_info->get_error_message()) . '</p>';
         }
 
-        // Enqueue assets (guarantee)
-        wp_enqueue_style(
-            'iyzico-installment',
-            IYZI_INSTALLMENT_ASSETS_URL . '/css/iyzico-installment.css',
-            array(),
-            IYZI_INSTALLMENT_VERSION
-        );
 
         wp_enqueue_script(
             'iyzico-installment',
@@ -145,6 +137,9 @@ class Iyzico_Installment_Frontend
             'totalText' => __('Toplam', 'iyzico-installment'),
             'currencySymbol' => get_woocommerce_currency_symbol()
         ));
+
+        // Add custom CSS if provided
+        $this->add_custom_css();
 
         return $this->render_installment_table($installment_info);
     }
@@ -172,6 +167,10 @@ class Iyzico_Installment_Frontend
     public function render_installment_tab()
     {
         $price = $this->get_product_price();
+        
+        // Apply VAT if enabled
+        $price = $this->settings->calculate_price_with_vat($price);
+        
         $installment_info = $this->api->get_installment_info($price);
 
         if (is_wp_error($installment_info)) {
@@ -253,6 +252,30 @@ class Iyzico_Installment_Frontend
             return '<img src="' . IYZI_INSTALLMENT_ASSETS_URL . '/images/QNB-CC.png" alt="' . esc_attr($card_family) . '" class="bank-logo" title="' . esc_attr($card_family) . '">';
         } else {
             return '<div class="bank-logo-default" title="' . esc_attr($card_family) . '">💳</div>';
+        }
+    }
+
+    /**
+     * Add custom CSS to the frontend if provided
+     */
+    private function add_custom_css()
+    {
+        $custom_css = $this->settings->get_custom_css();
+        
+        if (!empty($custom_css)) {
+            // Sanitize CSS for security - Remove dangerous elements
+            $custom_css = wp_strip_all_tags($custom_css);
+            $custom_css = str_replace(array(
+                '<script', '</script', 'javascript:', 'expression(', 'eval(', 
+                'onclick=', 'onload=', 'onerror=', 'onmouseover=', '@import',
+                'behavior:', '-moz-binding:', 'vbscript:', 'mocha:', 'livescript:'
+            ), '', $custom_css);
+            
+            // Only allow if it contains basic CSS properties
+            if (preg_match('/[{;}]/', $custom_css) && !preg_match('/<[^>]*>/', $custom_css)) {
+                // Add CSS to page with a unique handle to prevent conflicts
+                wp_add_inline_style('iyzico-installment', $custom_css);
+            }
         }
     }
 }
