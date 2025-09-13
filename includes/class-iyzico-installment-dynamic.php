@@ -29,14 +29,76 @@ class Iyzico_Installment_Dynamic
         add_action('wp_ajax_nopriv_get_installment_options', array($this, 'get_installment_options'));
         add_shortcode('dynamic_iyzico_installment', array($this, 'dynamic_installment_shortcode'));
         add_action('wp_footer', array($this, 'add_footer_script'));
-        // CSS override'ı kaldırıldı
-        // add_action('wp_head', array($this, 'add_installment_styles'));
+        add_action('wp_head', array($this, 'add_installment_styles'));
     }
 
     public function add_installment_styles()
     {
-        // CSS'ler artık eklentinin kendi dosyalarından gelecek
-        // Override etmemek için bu metod boş bırakıldı
+        if (is_product()) {
+            ?>
+            <style>
+                .dynamic-iyzico-installment {
+                    margin: 20px 0 !important;
+                    padding: 0 !important;
+                }
+
+                .dynamic-iyzico-installment table {
+                    width: 100% !important;
+                    border-collapse: collapse !important;
+                    margin: 15px 0 !important;
+                    background: white !important;
+                    border: 1px solid #ddd !important;
+                    border-radius: 5px !important;
+                    overflow: hidden !important;
+                }
+
+                .dynamic-iyzico-installment table th {
+                    background: #f8f8f8 !important;
+                    padding: 12px 8px !important;
+                    text-align: center !important;
+                    font-weight: bold !important;
+                    font-size: 13px !important;
+                    color: #333 !important;
+                    border-bottom: 2px solid #ddd !important;
+                }
+
+                .dynamic-iyzico-installment table td {
+                    padding: 10px 8px !important;
+                    text-align: center !important;
+                    font-size: 12px !important;
+                    color: #333 !important;
+                    border-bottom: 1px solid #eee !important;
+                }
+
+                .dynamic-iyzico-installment table td.amount {
+                    color: #333 !important;
+                }
+
+                .dynamic-iyzico-installment table tr:nth-child(even) {
+                    background: #f9f9f9 !important;
+                }
+
+                .dynamic-iyzico-installment table tr:hover {
+                    background: #f0f8ff !important;
+                }
+
+                .dynamic-iyzico-installment img {
+                    display: block !important;
+                    margin: 10px auto !important;
+                    max-height: 30px !important;
+                    max-width: 120px !important;
+                }
+
+                @media (max-width: 768px) {
+                    .dynamic-iyzico-installment table th,
+                    .dynamic-iyzico-installment table td {
+                        padding: 8px 4px !important;
+                        font-size: 11px !important;
+                    }
+                }
+            </style>
+            <?php
+        }
     }
 
     public function add_footer_script()
