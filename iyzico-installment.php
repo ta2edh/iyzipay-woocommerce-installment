@@ -25,7 +25,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin Constants
-define('IYZI_INSTALLMENT_VERSION', '1.0.0');
+define('IYZI_INSTALLMENT_VERSION', '1.1.0');
 define('IYZI_INSTALLMENT_FILE', __FILE__);
 define('IYZI_INSTALLMENT_PATH', plugin_dir_path(__FILE__));
 define('IYZI_INSTALLMENT_URL', plugin_dir_url(__FILE__));

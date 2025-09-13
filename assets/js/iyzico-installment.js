@@ -23,7 +23,7 @@
     $(document).on('click', '.iyzico-copy-shortcode', function (e) {
       e.preventDefault();
       var $btn = $(this);
-      var target = $btn.data('target') || 'iyzico-shortcode'; // data-target kullan, yoksa varsayılan
+      var target = $btn.attr('data-target') || 'iyzico-shortcode'; // attr kullan data yerine
       var shortcodeText = $('#' + target).text() || $btn.data('shortcode') || '';
       if (!shortcodeText) { alert(L.copyError); return; }
 
