@@ -1,5 +1,22 @@
 # iyzico Installment for WooCommerce
 
+> **🔱 Bu proje [iyzico/iyzipay-woocommerce-installment](https://github.com/iyzico/iyzipay-woocommerce-installment) reposunun fork'udur**
+
+## 🚀 Bu Fork'ta Eklenen Özellikler
+
+### Dinamik Taksit Sistemi
+- `[dynamic_iyzico_installment]` shortcode desteği
+- Varyasyonlu ürünlerde gerçek zamanlı taksit hesaplama
+- AJAX tabanlı anlık fiyat güncellemesi
+- KDV dahil fiyat hesaplama seçeneği
+
+### UI/UX İyileştirmeleri
+- Shortcode kopyalama butonları düzeltildi
+- CSS renk çakışmaları giderildi
+- Modern taksit tablosu tasarımı
+
+---
+
 [![WordPress](https://img.shields.io/badge/WordPress-6.6+-blue.svg)](https://wordpress.org/)
 [![WooCommerce](https://img.shields.io/badge/WooCommerce-9.3.3+-green.svg)](https://woocommerce.com/)
 [![PHP](https://img.shields.io/badge/PHP-7.4.33+-red.svg)](https://php.net/)
