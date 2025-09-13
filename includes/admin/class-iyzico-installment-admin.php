@@ -267,7 +267,7 @@ class Iyzico_Installment_Admin
                                 <label><?php echo esc_html__('Shortcode', 'iyzico-installment'); ?></label>
                                 <div class="iyzico-shortcode-box">
                                     <code id="iyzico-shortcode">[iyzico_installment price="1000" bin=""]</code>
-                                    <button type="button" class="iyzico-copy-shortcode button">
+                                    <button type="button" class="iyzico-copy-shortcode button" data-target="iyzico-shortcode">
                                         <?php echo esc_html__('Kopyala', 'iyzico-installment'); ?>
                                     </button>
                                 </div>
