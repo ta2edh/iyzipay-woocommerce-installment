@@ -10,13 +10,16 @@ iyzico Installment eklentisi, WooCommerce ürün sayfalarında iyzico'nun taksit
 ## 🚀 Özellikler
 
 - **Ürün Sayfası Entegrasyonu**: WooCommerce ürün sayfalarında otomatik taksit gösterimi
+- **Dinamik Taksit Hesaplama**: Varyasyonlu ürünlerde fiyat değişiminde anlık taksit güncelleme
 - **iyzico API Entegrasyonu**: Gerçek zamanlı taksit hesaplama
 - **Çoklu Entegrasyon Seçenekleri**: Shortcode, ürün sekmesi veya widget olarak kullanım
+- **AJAX Desteği**: Dinamik taksit hesaplama ve güncelleme
 - **Responsive Tasarım**: Mobil ve masaüstü uyumlu
+- **Banka Logoları**: Kredi kartı familyalarına göre otomatik logo gösterimi
+- **KDV Hesaplama**: Ürün fiyatlarına KDV dahil etme seçeneği
 - **HPOS Uyumluluğu**: WooCommerce High-Performance Order Storage desteği
 - **Çoklu Dil Desteği**: i18n entegrasyonu
 - **Gelişmiş Loglama**: Detaylı hata takibi ve debug bilgileri
-- **AJAX Desteği**: Dinamik taksit hesaplama
 
 ## 📋 Gereksinimler
 
@@ -59,7 +62,7 @@ Eklentiyi kullanabilmek için iyzico hesap bilgilerinizi girmeniz gerekir:
 
 Eklenti üç farklı entegrasyon türü sunar:
 
-- **Shortcode**: `[iyzico_installment]` kullanarak istediğiniz yerde gösterebilirsiniz
+- **Shortcode**: `[iyzico_installment]` veya `[dynamic_iyzico_installment]` kullanarak istediğiniz yerde gösterebilirsiniz
 - **Ürün Sekmesi**: Ürün sayfalarında otomatik olarak taksit sekmesi ekler
 - **Widget**: Sidebar veya footer'da taksit bilgilerini gösterir
 
@@ -78,6 +81,14 @@ Herhangi bir sayfa veya yazıda taksit bilgilerini göstermek için:
 [iyzico_installment]
 ```
 
+### Dinamik Taksit Shortcode
+
+Varyasyonlu ürünlerde anlık taksit güncelleme için:
+
+```php
+[dynamic_iyzico_installment]
+```
+
 ### PHP Kod ile Kullanım
 
 ```php
@@ -85,7 +96,7 @@ Herhangi bir sayfa veya yazıda taksit bilgilerini göstermek için:
 $installment_info = $GLOBALS['iyzico_api']->get_installment_info($product_price);
 
 // Shortcode'u render etmek için
-echo do_shortcode('[iyzico_installment]');
+echo do_shortcode('[iyzico_installment]'); // veya [dynamic_iyzico_installment]
 ```
 
 ### Tema Entegrasyonu
@@ -95,7 +106,7 @@ echo do_shortcode('[iyzico_installment]');
 ```php
 // Ürün sayfalarında otomatik taksit gösterimi
 add_action('woocommerce_single_product_summary', function() {
-    echo do_shortcode('[iyzico_installment]');
+    echo do_shortcode('[iyzico_installment]'); // veya [dynamic_iyzico_installment]
 }, 25);
 ```
 
@@ -110,10 +121,14 @@ iyzico-installment/
 │   ├── class-iyzico-installment-settings.php    # Ayarlar yönetimi
 │   ├── class-iyzico-installment-api.php         # API entegrasyonu
 │   ├── class-iyzico-installment-frontend.php    # Frontend işlemleri
+│   ├── class-iyzico-installment-dynamic.php     # Dinamik taksit sistemi
 │   ├── class-iyzico-installment-logger.php      # Loglama sistemi
 │   ├── class-iyzico-installment-hpos.php        # HPOS uyumluluğu
 │   └── admin/                      # Yönetici paneli
 ├── assets/                         # CSS, JS ve görseller
+│   ├── css/                        # Stil dosyaları
+│   ├── js/                         # JavaScript dosyaları
+│   └── images/                     # Banka logoları
 ├── i18n/                           # Dil dosyaları
 └── logs/                           # Log dosyaları
 ```
@@ -123,6 +138,7 @@ iyzico-installment/
 - **Settings**: Eklenti ayarlarını yönetir
 - **API**: iyzico API entegrasyonunu sağlar
 - **Frontend**: Kullanıcı arayüzü ve shortcode işlemleri
+- **Dynamic**: Varyasyonlu ürünlerde dinamik taksit hesaplama
 - **Logger**: Hata takibi ve debug bilgileri
 - **HPOS**: WooCommerce High-Performance Order Storage uyumluluğu
 - **Admin**: Yönetici paneli ayarları
@@ -150,36 +166,116 @@ $response = InstallmentInfo::retrieve($request, $options);
 
 ### CSS Özelleştirme
 
-`assets/css/iyzico-installment.css` dosyasını düzenleyerek görünümü özelleştirebilirsiniz:
+Eklentinin görünümünü admin panel üzerinden özelleştirebilirsiniz. Admin panelde bulunan "Özel CSS" alanına kendi stil kodlarınızı ekleyebilirsiniz:
 
 ```css
-.iyzico-installment-table {
-    border: 1px solid #ddd;
-    border-radius: 4px;
+/* Taksit container */
+.iyzico-installment-container {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
 }
 
-.iyzico-installment-row:hover {
-    background-color: #f9f9f9;
+/* Banka kartları */
+.iyzico-bank-card {
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+
+.iyzico-bank-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 ```
 
+Daha detaylı örnekler için `style.css` dosyasını inceleyebilirsiniz.
+
 ### JavaScript Özelleştirme
 
-`assets/js/iyzico-installment.js` dosyasında AJAX işlemlerini özelleştirebilirsiniz:
+Dinamik taksit güncellemesi için güvenli JavaScript işlemleri:
 
 ```javascript
-// Taksit bilgilerini güncelle
-function updateInstallmentInfo(price) {
+// Debug fonksiyonu - sadece WP_DEBUG modunda çalışır
+function debugLog(message, data) {
+    if (window.installment_ajax && window.installment_ajax.debug && typeof console !== 'undefined') {
+        if (data !== undefined) {
+            console.log(message, data);
+        } else {
+            console.log(message);
+        }
+    }
+}
+
+// Varyasyon değişikliklerini dinle
+jQuery(document).on('found_variation', 'form.variations_form', function(event, variation) {
+    if (variation && variation.display_price) {
+        var finalPrice = parseFloat(variation.display_price);
+        
+        // KDV hesaplama
+        if (window.installment_ajax && window.installment_ajax.vat_enabled === 'true') {
+            var vatRate = parseFloat(window.installment_ajax.vat_rate) || 0;
+            finalPrice = finalPrice * (1 + (vatRate / 100));
+        }
+        
+        debugLog('Final price with VAT:', finalPrice);
+        loadInstallments(finalPrice);
+    }
+});
+
+// Güvenli taksit bilgisi yükleme
+function loadInstallments(price) {
+    // Fiyat doğrulama
+    if (!price || price <= 0 || isNaN(price)) {
+        debugLog('Invalid price:', price);
+        return;
+    }
+    
+    // AJAX nesne varlık kontrolü
+    if (!window.installment_ajax) {
+        debugLog('installment_ajax object not found');
+        return;
+    }
+    
     jQuery.ajax({
-        url: iyzicoInstallment.ajaxUrl,
+        url: window.installment_ajax.ajax_url,
         type: 'POST',
         data: {
-            action: 'iyzico_get_installment_info',
+            action: 'get_installment_options',
             price: price,
-            nonce: iyzicoInstallment.nonce
+            product_id: parseInt(window.installment_ajax.product_id) || 0,
+            nonce: window.installment_ajax.nonce
         },
+        timeout: 10000, // 10 saniye timeout
         success: function(response) {
-            // Taksit tablosunu güncelle
+            debugLog('AJAX Response:', response);
+            
+            if (response && response.success) {
+                // response.data zaten server tarafında wp_kses_post() ile sanitize edilmiş
+                jQuery('.dynamic-iyzico-installment').html(response.data);
+            } else {
+                // Hata mesajlarını güvenli şekilde göster - XSS koruması
+                var errorMsg = (response && response.data) ? String(response.data) : 'Bilinmeyen hata';
+                var sanitizedError = jQuery('<div>').text(errorMsg).html();
+                jQuery('.dynamic-iyzico-installment').html('<p>Hata: ' + sanitizedError + '</p>');
+            }
+        },
+        error: function(xhr, status, error) {
+            debugLog('AJAX Error - Status:', status);
+            debugLog('AJAX Error - Error:', error);
+            
+            // Kullanıcıya teknik detayları gösterme - güvenlik
+            var userMessage = 'Bağlantı hatası. Lütfen tekrar deneyin.';
+            
+            // Timeout durumunda özel mesaj
+            if (status === 'timeout') {
+                userMessage = 'İstek zaman aşımına uğradı. Lütfen tekrar deneyin.';
+            }
+            
+            jQuery('.dynamic-iyzico-installment').html('<p>' + userMessage + '</p>');
         }
     });
 }
@@ -192,7 +288,13 @@ function updateInstallmentInfo(price) {
 **Taksit bilgileri görünmüyor:**
 - API kimlik bilgilerini kontrol edin
 - WooCommerce'ın aktif olduğundan emin olun
+- Dinamik taksit ayarının etkin olduğunu kontrol edin
 - Log dosyalarını inceleyin
+
+**Varyasyonlarda taksit güncellenmiyor:**
+- JavaScript hatalarını kontrol edin (Browser Console)
+- AJAX isteklerinin başarılı olduğunu kontrol edin
+- Nonce değerinin doğru olduğundan emin olun
 
 **API hatası alıyorsunuz:**
 - API Key ve Secret Key'in doğru olduğunu kontrol edin
@@ -218,9 +320,13 @@ Eklenti i18n standartlarını kullanır:
 ## 🔒 Güvenlik
 
 - **Nonce Kontrolü**: AJAX isteklerinde güvenlik
+- **Rate Limiting**: DDoS saldırılarına karşı koruma (IP başına 15 req/min)
 - **ABSPATH Kontrolü**: Doğrudan erişim engelleme
+- **Gelişmiş CSS Sanitization**: XSS koruması ile güvenli stil ekleme
+- **Production-Safe Debugging**: Debug modunda kontrollü log sistemi
 - **API Güvenliği**: iyzico'nun güvenli API protokolü
 - **WordPress Standartları**: WordPress coding standards uyumlu
+- **Input/Output Sanitization**: Tüm veri girişlerinde güvenlik kontrolü
 
 ## 📊 Performans
 
@@ -247,6 +353,12 @@ Bu proje [GPL v2](https://www.gnu.org/licenses/gpl-2.0.html) lisansı altında l
 - **GitHub Issues**: [Repository Issues](https://github.com/iyzico/iyzipay-woocommerce-installment/issues)
 
 ## 🔄 Güncellemeler
+
+### v1.1.0
+- **Dinamik Taksit Sistemi**: Varyasyonlu ürünlerde anlık taksit güncelleme
+- **KDV Hesaplama**: Ürün fiyatlarına KDV dahil etme seçeneği
+- **AJAX Güvenlik**: Nonce kontrolü ve güvenlik iyileştirmeleri
+- **CSS Optimizasyonu**: Responsive tasarım iyileştirmeleri
 
 ### v1.0.0
 - İlk sürüm

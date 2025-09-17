@@ -2,7 +2,7 @@
 Contributors: iyzico, tarikkamat
 Tags: iyzico, woocommerce, installment, taksit, ürün-sayfası
 Tested up to: 6.8
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 Requires at least: 6.6
 Requires PHP: 7.4.33
 License: GPL v2 or later
@@ -17,6 +17,8 @@ iyzico Installment eklentisi, WooCommerce ürün sayfalarında iyzico'nun taksit
 **Ana Özellik:**
 
 * Ürün sayfasında taksit seçeneklerini görüntüleme
+* KDV dahil fiyat hesaplama seçeneği
+* Admin arayüzünden özel CSS ekleme
 * iyzico taksit hesaplama entegrasyonu
 * WooCommerce ürün sayfalarına otomatik entegrasyon
 * Responsive tasarım
@@ -91,6 +93,12 @@ Evet, teknik destek için iyzico müşteri hizmetleri ile iletişime geçebilirs
 
 == Changelog ==
 
+= 1.1.0 =
+* Dinamik taksit sistemi - Varyasyonlu ürünlerde anlık taksit güncelleme
+* [dynamic_iyzico_installment] shortcode desteği
+* KDV hesaplama seçeneği eklendi
+* Admin panelinden özel CSS ekleme özelliği
+
 = 1.0.0 =
 * İlk sürüm
 * WooCommerce ürün sayfası entegrasyonu
@@ -99,6 +107,9 @@ Evet, teknik destek için iyzico müşteri hizmetleri ile iletişime geçebilirs
 * Responsive tasarım
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Major özellik güncellemesi! Dinamik taksit sistemi ve özelleştirme seçenekleri eklendi. Güncelleme şiddetle önerilir.
 
 = 1.0.0 =
 Bu ilk sürümdür. Güvenlik ve performans iyileştirmeleri için güncel tutmanız önerilir.

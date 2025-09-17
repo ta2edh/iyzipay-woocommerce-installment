@@ -113,6 +113,24 @@
   font-family: monospace;
 }
 
+/* Custom CSS Textarea */
+.iyzico-form-control.code {
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  font-size: 13px;
+  line-height: 1.4;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  resize: vertical;
+  min-height: 200px;
+}
+
+.iyzico-form-control.code:focus {
+  background: #fff;
+  border-color: #2271b1;
+  box-shadow: 0 0 0 1px #2271b1;
+  outline: none;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 782px) {
   .iyzico-admin-container {
